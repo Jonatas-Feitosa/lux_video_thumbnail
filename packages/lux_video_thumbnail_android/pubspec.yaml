@@ -1,0 +1,25 @@
+name: lux_video_thumbnail_android
+description: Android video thumbnail implementation using reusable MediaMetadataRetriever sessions and a serial worker with bounded resources.
+version: 1.0.0
+
+environment:
+  sdk: ^3.10.9
+  flutter: '>=3.38.10'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  lux_video_thumbnail_platform_interface: ^1.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  plugin:
+    implements: lux_video_thumbnail
+    platforms:
+      android:
+        package: com.lux.lux_video_thumbnail
+        pluginClass: LuxVideoThumbnailPlugin

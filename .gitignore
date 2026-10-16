@@ -1,0 +1,71 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.build/
+.buildlog/
+.history
+.svn/
+.swiftpm/
+migrate_working_dir/
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# Local editor and assistant state
+.vscode/
+.kilo/
+.codex/
+
+# Flutter/Dart/Pub related
+# Libraries should not include pubspec.lock, per https://dart.dev/guides/libraries/private-files#pubspeclock.
+/pubspec.lock
+packages/**/pubspec.lock
+**/doc/api/
+.dart_tool/
+.packages
+.flutter-plugins
+.flutter-plugins-dependencies
+**/GeneratedPluginRegistrant.*
+**/generated_plugin_registrant.dart
+**/build/
+**/coverage/
+**/__pycache__/
+.gradle/
+.kotlin/
+.cxx/
+.externalNativeBuild/
+**/ephemeral/
+**/Pods/
+**/DerivedData/
+*.dill
+*.apk
+*.aab
+*.aar
+*.symbols
+/test/canvaskit/
+**/pubspec_overrides.yaml
+
+# Machine configuration, signing material and local credentials
+local.properties
+key.properties
+keystore.properties
+.env
+.env.*
+*.jks
+*.keystore
+*.pem
+*.key
+*.p12
+*.pfx
+credentials*.json
+service-account*.json
+google-services.json
+GoogleService-Info.plist
+firebase_options.dart

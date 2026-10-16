@@ -1,0 +1,39 @@
+name: lux_video_thumbnail
+description: Generate video thumbnails at a timestamp on Android and web, with a video picker, timeline slider, and image preview widget.
+version: 0.0.1
+
+topics:
+  - video
+  - thumbnail
+  - video-thumbnail
+  - video-picker
+  - flutter-web
+
+environment:
+  sdk: ^3.10.9
+  flutter: '>=3.38.10'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_web_plugins:
+    sdk: flutter
+  lux_video_thumbnail_platform_interface: ^1.0.0
+  lux_video_thumbnail_web: ^1.0.0
+  lux_video_thumbnail_android: ^1.0.0
+  plugin_platform_interface: ^2.1.8
+  web: ^1.1.1
+  file_picker: ^8.3.7
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  plugin:
+    platforms:
+      android:
+        default_package: lux_video_thumbnail_android
+      web:
+        default_package: lux_video_thumbnail_web

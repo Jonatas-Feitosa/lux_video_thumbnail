@@ -1,0 +1,28 @@
+name: lux_video_thumbnail_web
+description: Browser video thumbnails using typed JS interop, video and canvas, with local Blob selection and timestamp seeking.
+version: 1.0.0
+
+environment:
+  sdk: ^3.10.9
+  flutter: '>=3.38.10'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_web_plugins:
+    sdk: flutter
+  lux_video_thumbnail_platform_interface: ^1.0.0
+  web: ^1.1.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  plugin:
+    implements: lux_video_thumbnail
+    platforms:
+      web:
+        pluginClass: LuxVideoThumbnailWeb
+        fileName: lux_video_thumbnail_web.dart

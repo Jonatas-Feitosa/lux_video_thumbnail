@@ -1,0 +1,17 @@
+name: lux_video_thumbnail_platform_interface
+description: Shared models, errors, resource limits and platform contracts for the lux_video_thumbnail Android and web plugin.
+version: 1.0.0
+
+environment:
+  sdk: ^3.10.9
+  flutter: '>=3.38.10'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  plugin_platform_interface: ^2.1.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  very_good_analysis: ^6.0.0
