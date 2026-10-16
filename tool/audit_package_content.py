@@ -43,6 +43,11 @@ FORBIDDEN_FILES = {'pubspec_overrides.yaml', 'pubspec.lock', 'local.properties',
                    'Generated.xcconfig', 'flutter_export_environment.sh'}
 FORBIDDEN_SUFFIXES = {'.jks', '.keystore', '.pem', '.key', '.p12', '.pfx', '.log',
                       '.apk', '.aab', '.aar', '.class', '.iml', '.dill'}
+FEDERATED_PACKAGE_PREFIXES = {
+    'packages/lux_video_thumbnail_android/',
+    'packages/lux_video_thumbnail_platform_interface/',
+    'packages/lux_video_thumbnail_web/',
+}
 
 
 def selected_files(name: str, source: Path) -> list[str]:
@@ -112,7 +117,16 @@ def main() -> None:
             if (FORBIDDEN_PARTS.intersection(path.parts) or path.name in FORBIDDEN_FILES
                     or path.suffix in FORBIDDEN_SUFFIXES or any(p.startswith('.') for p in path.parts)):
                 findings.append({'file': relative, 'rule': 'excluded-state-or-credentials'})
-            if name == 'lux_video_thumbnail' and path.parts[0] in {'packages', 'android', 'ios'}:
+            # The source repository is a federated plugin. Its public
+            # implementation packages are deliberately included in the root
+            # archive so Pub can publish nested packages from the same checkout.
+            # Other duplicate platform directories remain release blockers.
+            expected_federated_source = any(
+                relative.startswith(prefix) for prefix in FEDERATED_PACKAGE_PREFIXES
+            )
+            if (name == 'lux_video_thumbnail'
+                    and path.parts[0] in {'android', 'ios'}
+                    and not expected_federated_source):
                 findings.append({'file': relative, 'rule': 'duplicate-or-legacy-platform'})
             data = (source / relative).read_bytes()
             if path.suffix == '.md':

@@ -1,20 +1,3 @@
-# Only publish the package's own source and reviewable supporting files.
-/*
-!/lib/
-!/test/
-!/pubspec.yaml
-!/analysis_options.yaml
-!/README.md
-!/CHANGELOG.md
-!/LICENSE*
-!/NOTICE*
-!/AUTHORS*
-!/COPYING*
-!/example/
-!/tool/
-!/PUBLICATION.md
-!/PUBLICATION_CHECKLIST.md
-
 # Generated state, tooling configuration and local dependency resolution.
 **/.*
 **/build/
@@ -65,7 +48,7 @@
 **/credentials*.json
 **/service-account*.json
 
-# Federated implementations ship independently. Root Android/iOS scaffolds
-# are deliberately absent from the allowlist above.
+/android/
+/ios/
 /test/canvaskit/
 /example/ios/
