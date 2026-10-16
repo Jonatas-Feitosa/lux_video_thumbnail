@@ -1,6 +1,7 @@
 name: lux_video_thumbnail_web
 description: Browser video thumbnails using typed JS interop, video and canvas, with local Blob selection and timestamp seeking.
 version: 1.0.0
+repository: https://github.com/Jonatas-Feitosa/lux_video_thumbnail
 
 environment:
   sdk: ^3.10.9

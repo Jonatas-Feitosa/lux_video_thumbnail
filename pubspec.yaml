@@ -1,6 +1,7 @@
 name: lux_video_thumbnail
 description: Generate video thumbnails at a timestamp on Android and web, with a video picker, timeline slider, and image preview widget.
 version: 0.0.1
+repository: https://github.com/Jonatas-Feitosa/lux_video_thumbnail
 
 topics:
   - video

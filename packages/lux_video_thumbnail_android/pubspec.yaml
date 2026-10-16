@@ -1,6 +1,7 @@
 name: lux_video_thumbnail_android
 description: Android video thumbnail implementation using reusable MediaMetadataRetriever sessions and a serial worker with bounded resources.
 version: 1.0.0
+repository: https://github.com/Jonatas-Feitosa/lux_video_thumbnail
 
 environment:
   sdk: ^3.10.9

@@ -1,6 +1,7 @@
 name: lux_video_thumbnail_platform_interface
 description: Shared models, errors, resource limits and platform contracts for the lux_video_thumbnail Android and web plugin.
 version: 1.0.0
+repository: https://github.com/Jonatas-Feitosa/lux_video_thumbnail
 
 environment:
   sdk: ^3.10.9
