@@ -22,7 +22,7 @@ LOGS = ROOT / '.dart_tool/publication/content'
 PACKAGES = {
     'lux_video_thumbnail': ROOT,
     **{f'lux_video_thumbnail_{name}': ROOT / 'packages' / f'lux_video_thumbnail_{name}'
-       for name in ('platform_interface', 'android', 'web')},
+       for name in ('platform_interface', 'android', 'ios', 'web')},
 }
 RULES = {
     'private-key': rb'-----BEGIN (?:RSA |EC |OPENSSH |DSA |ENCRYPTED )?PRIVATE KEY-----',
@@ -45,6 +45,7 @@ FORBIDDEN_SUFFIXES = {'.jks', '.keystore', '.pem', '.key', '.p12', '.pfx', '.log
                       '.apk', '.aab', '.aar', '.class', '.iml', '.dill'}
 FEDERATED_PACKAGE_PREFIXES = {
     'packages/lux_video_thumbnail_android/',
+    'packages/lux_video_thumbnail_ios/',
     'packages/lux_video_thumbnail_platform_interface/',
     'packages/lux_video_thumbnail_web/',
 }

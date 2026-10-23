@@ -1,167 +1,103 @@
 # Development and publication
 
-## Current release status
+## iOS preview release
 
-The four federated packages have MIT licenses with `Copyright (c) 2026 Jônatas
-Feitosa`, their own README and CHANGELOG files, and generated API documentation.
-The example includes CupertinoIcons and retains icon tree shaking.
+On 2026-10-22, the pub.dev API reported `lux_video_thumbnail 0.0.1` and
+platform interface/Android/web `1.0.0` already published. The iOS package name
+returned 404; that does not reserve the name.
 
-The static analysis and the completed local validation suites are documented in
-[PUBLICATION_CHECKLIST.md](PUBLICATION_CHECKLIST.md). Historical counts in that
-file belong to the release stages in which they were recorded.
+This checkout prepares **lux_video_thumbnail_ios 1.0.0-dev.1**, followed by
+**lux_video_thumbnail 0.0.2-ios.1**. The existing interface, Android and web
+versions are reused. No change to their implementation or republication is
+required. The iOS implementation awaits native Mac/device validation; this is
+an opt-in preview for that validation, not a claim of verified iOS support.
 
-A real public `repository` or `homepage` URL is still required in all four
-pubspec files. It is deliberately absent rather than publishing an invented URL.
-The current Pub dry runs therefore end with one URL warning per package (exit
-code 65), plus local-override hints in dependent packages. No warning was
-suppressed and no package, remote repository, commit, or release was created by
-this preparation.
-
-The four package names returned HTTP 404 from the pub.dev API on 2026-10-15.
-That does not reserve a name. A fully hosted installation can only be validated
-after the packages are published in the order below.
-
-## Final release procedure
-
-1. Provide a real repository or website URL and add it to every pubspec.
-2. Recheck name availability, archive content, advisories, licenses, and package
-   metadata.
-3. In a full checkout, run the serial dry-run and content checks:
-
-   ```powershell
-   powershell -NoProfile -ExecutionPolicy Bypass -File tool/check_publication.ps1 -Dart dart
-   python tool/test_audit_package_content.py
-   python tool/audit_package_content.py
-   ```
-
-   The script only runs `publish --dry-run`; it never publishes or ignores
-   warnings. It copies the complete Pub transcript immediately after each
-   command because Pub shares its log cache. Do not run other Pub commands in
-   parallel. Logs and review copies are kept under `.dart_tool/`, outside the
-   distributed archives.
-4. Validate the platform interface without overrides. With separate approval,
-   publish `lux_video_thumbnail_platform_interface 1.0.0` and wait until it is
-   available.
-5. Resolve and validate Android and web against the hosted interface, without
-   overrides. With separate approval, publish each `1.0.0` implementation.
-6. Resolve and validate the main package against all three hosted packages,
-   without overrides. With separate approval, publish
-   `lux_video_thumbnail 0.0.1`.
-7. Test a new consumer that depends only on `lux_video_thumbnail: ^0.0.1`, with
-   no `path` dependency or override. Review the pub.dev package pages and docs.
-8. Before broad support claims, complete physical Android, native-picker,
-   Safari/mobile-browser, memory, and latency validation.
-
-Do not use `--ignore-warnings` or `--skip-validation` as evidence that a package
-is ready. A pub.dev score and publisher registration have not been verified by a
-real publication.
-
-## Versions and requirements
-
-| Package | Initial version | Hosted federated dependencies |
-| --- | --- | --- |
-| `lux_video_thumbnail_platform_interface` | `1.0.0` | None |
-| `lux_video_thumbnail_android` | `1.0.0` | Interface `^1.0.0` |
-| `lux_video_thumbnail_web` | `1.0.0` | Interface `^1.0.0` |
-| `lux_video_thumbnail` | `0.0.1` | Interface, Android, and web `^1.0.0` |
-
-The manifests require Dart `^3.10.9` and Flutter `>=3.38.10`. This is the
-validated support floor, not a measurement of the lowest technically possible
-SDK version. `web 1.1.1`, `file_picker 8.3.7`, and
-`plugin_platform_interface 2.1.8` are the validated versions; no major-version
-upgrade was made as part of release preparation.
-
-## Local development
-
-This section requires a full checkout containing `packages/`. A package
-extracted from pub.dev resolves hosted dependencies directly and must not receive
-the local overrides described here.
-
-Published manifests use hosted versions. Monorepo paths are isolated in local
-`pubspec_overrides.yaml` files, ignored by version control and excluded from all
-four simulated publication archives. Prepare a source checkout with:
+## Check before publishing
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File tool/prepare_local_dependencies.ps1
 flutter pub get
+flutter analyze --no-pub
+flutter test --no-pub
+powershell -NoProfile -ExecutionPolicy Bypass -File tool/check_publication.ps1
+python tool/test_audit_package_content.py
+python tool/audit_package_content.py
 ```
 
-The script prepares the main package, example, and Android/web implementations.
-It preserves customized override files and reports files that require manual
-attention. Run `flutter pub get` from a subpackage when working on it separately.
-Overrides do not propagate to consumers, so the example owns its override file.
-See the [Pub override documentation](https://dart.dev/tools/pub/dependencies#pubspec_overridesyaml).
+The dry-run script checks all five package archives serially, copies Pub's
+complete transcripts into `.dart_tool/publication/content/`, and never uploads.
+Do not run other Pub commands concurrently, because Pub shares its cache log.
+Use [IOS_VALIDATION.md](IOS_VALIDATION.md) for native validation on macOS.
 
-The example is private (`publish_to: none`) and uses a relative path to the main
-package. That does not alter any distributed manifest.
+## Publish this preview
 
-## Publication content and review
+Publication is a separate, explicit user action. Authenticate with the pub.dev
+account that owns the main package. Review and commit the changes, or use an
+isolated source export, before publishing: Pub warns about modified tracked
+files in the working checkout. No commit was created by this preparation.
+From the repository root:
 
-Each package has a restrictive `.pubignore` allowlist. The main package includes
-its library, tests and fixtures, review tools, documentation, and the Android/web
-example. Federated implementations include their own libraries and tests; the
-Android package also includes Gradle, manifests, resources, Kotlin code, and JVM
-regressions.
+```sh
+cd packages/lux_video_thumbnail_ios
+dart pub publish
+cd ../..
+```
 
-Build output, caches, hidden tooling state, logs, IDE settings, local overrides
-and lockfiles, machine paths, generated registrants, signing keys, and credential
-files are excluded. Legal files such as LICENSE, NOTICE, AUTHORS, and COPYING are
-allowed. See [What files are published](https://dart.dev/tools/pub/publishing#what-files-are-published).
+Wait for `lux_video_thumbnail_ios 1.0.0-dev.1` to be available on pub.dev. Resolve
+and dry-run the main package with hosted dependencies, rather than trusting
+checkout overrides. Temporarily move the root and example
+`pubspec_overrides.yaml` files outside the checkout, preserving their contents;
+run `flutter pub get` and `dart pub publish --dry-run` from the root. The main
+package must resolve the hosted iOS prerelease. Then publish:
 
-`tool/audit_package_content.py` reads Pub's exact archive list, checks forbidden
-paths, recognizable credential patterns, local machine paths, and relative
-Markdown links. Its output records file names, hashes, and rule identifiers; it
-never prints possible credential values. Reviewed source files are copied to an
-isolated directory outside the publishable archive. Pattern scanning does not
-prove that every possible secret or vulnerability is absent.
+```sh
+dart pub publish
+```
 
-The archive review reduced the historical compressed archive sizes as follows:
+Restore the development overrides afterwards. Do not republish unchanged
+`1.0.0` packages, skip validation, or ignore warnings. A hosted installation of
+the new main package can only be verified after its iOS dependency is published.
 
-| Package | Before | After cleanup |
-| --- | --- | --- |
-| Main | 40 MB | 91 KB |
-| Interface | 13 MB | 12 KB |
-| Android | 13 MB | 15 KB |
-| Web | 13 MB | 5 KB |
+On the work Mac, add this exact preview to a consumer app:
 
-Later tests and documentation may change those sizes. Re-run the dry runs before
-publication rather than relying on historical values.
+```yaml
+dependencies:
+  lux_video_thumbnail: 0.0.2-ios.1
+```
 
-## Runtime behavior and boundaries
+Run `flutter pub get`, add `NSPhotoLibraryUsageDescription` to the app's
+Info.plist for the gallery picker, then build/run on iOS. A normal dependency
+on `^0.0.1` will not select this preview. After native validation, prepare stable
+versions and update the main package's iOS dependency accordingly.
 
-Public and platform APIs reject negative timestamps and requests beyond known
-duration. An exact end position is normalized to the last valid earlier position.
-Unknown duration stays unknown and does not reset a requested position. The
-returned timestamp is the normalized request, not a measured presentation
-timestamp. Frame availability depends on decoder and browser behavior.
+## Source checkout development
 
-For finite web media, a large seek discrepancy can be recovered by muted forward
-decoding from the start with bounded 15-second waits. This is slower and cannot
-guarantee an exact frame PTS. Autoplay refusal, missing progress, browser
-scheduling, sparse frames, variable frame rates, and background throttling can
-still prevent a result.
+Dart 3.10.9+, Flutter 3.38.10+, Android API 24+, iOS 13+ and supported browsers.
+Native iOS compilation requires macOS/Xcode. Published manifests use hosted
+versions; development overrides are excluded from archives.
 
-Android performs metadata, extraction, compression, and I/O through a dedicated
-serial worker per engine. Platform-channel replies return on the main handler.
-Detaching an engine rejects pending/new work, lets active decoder work finish on
-the worker, and cleans only tracked temporary resources. The cleanup is
-best-effort when native work is stuck.
+On macOS/Linux, prepare a full checkout with:
 
-Shared limits include four sessions, batches of 1-16 thumbnails, 16 queued
-session operations, byte sources up to 64 MiB, encoded images/chunks up to 8 MiB,
-and source/output dimensions from 1 to 4096 per axis. Android additionally caps
-its engine queue at 16 calls/128 MiB payloads and retains at most 64 temporary
-thumbnails. These limits are not a global memory budget or a guarantee against
-decoder/application out-of-memory failures.
+```sh
+python3 tool/prepare_local_dependencies.py
+flutter pub get
+```
 
-`saveToFile` returns `Future<String>` and creates a caller-owned copy in a new
-subdirectory of either the selected parent or `Directory.systemTemp`. The caller
-must remove that output when finished. Web throws `UnsupportedError` for
-filesystem saving and continues to provide bytes for an application-owned
-download/upload flow. The plugin and example do not request broad Android storage
-permissions; callers must provide readable paths or URIs.
+On Windows use `tool/prepare_local_dependencies.ps1`. Both scripts preserve
+custom override files and upgrade the known pre-iOS overrides. The example owns
+its own overrides because overrides do not propagate from dependencies. An
+extracted package or consumer app should resolve hosted dependencies directly.
 
-The JVM tests simulate media, engine, Handler/Looper, and queue behavior. Browser
-tests exercise real decoding. A manual physical-Android test is reported in the
-README, but these results do not establish exhaustive native media/picker coverage,
-Safari support, peak-memory characteristics, or latency for long videos.
+## Archive review
+
+The main archive includes the example's iOS scaffold and native tests. The new
+iOS dependency includes Swift sources, CocoaPods/SwiftPM metadata, privacy
+manifest, Dart registration tests and legal/documentation files. Legacy root
+`android/` and `ios/` directories remain excluded.
+
+Every package excludes local overrides, caches, locks, generated registrants,
+credentials, machine configuration and build artifacts. The archive auditor
+checks Pub's exact file list, recognizable credential patterns, local machine
+paths and packaged Markdown links. It reports filenames/hashes/rules without
+printing possible credential values. Pattern checks are not a complete security
+audit. Re-run the checks for the exact files being published.

@@ -1,0 +1,25 @@
+name: lux_video_thumbnail_ios
+description: iOS video thumbnails using reusable AVFoundation sessions, a serial background worker, and owned temporary files.
+version: 1.0.0-dev.1
+repository: https://github.com/Jonatas-Feitosa/lux_video_thumbnail
+
+environment:
+  sdk: ^3.10.9
+  flutter: '>=3.38.10'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  lux_video_thumbnail_platform_interface: ^1.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  plugin:
+    implements: lux_video_thumbnail
+    platforms:
+      ios:
+        pluginClass: LuxVideoThumbnailPlugin

@@ -173,7 +173,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "0.0.1"
+    version: "0.0.2-ios.1"
   lux_video_thumbnail_android:
     dependency: "direct overridden"
     description:
@@ -181,6 +181,13 @@ packages:
       relative: true
     source: path
     version: "1.0.0"
+  lux_video_thumbnail_ios:
+    dependency: "direct overridden"
+    description:
+      path: "../packages/lux_video_thumbnail_ios"
+      relative: true
+    source: path
+    version: "1.0.0-dev.1"
   lux_video_thumbnail_platform_interface:
     dependency: "direct dev"
     description:

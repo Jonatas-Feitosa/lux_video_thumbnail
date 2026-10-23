@@ -1,3 +1,14 @@
+## 0.0.2-ios.1
+
+* Add the endorsed iOS 13+ implementation using AVFoundation, with local paths,
+  file/HTTP(S) URLs, byte sources, reusable sessions, JPEG/PNG and image sizing.
+* Enable iOS in the public API, embedded video picker and dialog; keep input
+  files borrowed and clean plugin-owned resources on disposal/engine detach.
+* Include CocoaPods/Swift Package Manager metadata and native integration tests
+  in the downloadable example. WebP output is explicitly unsupported on iOS.
+* This prerelease is for Mac/device validation; Windows tests do not validate
+  Swift compilation or real iOS extraction. See IOS_VALIDATION.md.
+
 ## 0.0.1
 
 * Use English defaults in the picker, dialog, and example; expose the preview

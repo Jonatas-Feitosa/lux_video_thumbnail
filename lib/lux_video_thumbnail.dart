@@ -25,7 +25,7 @@ export 'src/thumbnail_data.dart';
 export 'src/video_thumbnail_picker.dart';
 export 'src/video_thumbnail_dialog.dart';
 
-/// Generates video thumbnails on Android and web.
+/// Generates video thumbnails on Android, iOS and web.
 class LuxVideoThumbnail {
   /// Generates an image and releases the decoder and intermediate temporaries.
   /// Caller-owned video files and Blob URLs remain owned by the caller.

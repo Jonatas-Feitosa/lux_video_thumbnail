@@ -15,7 +15,9 @@ class ThumbnailSession {
   int _pending = 0;
 
   static Future<ThumbnailSession> open(VideoSource source) async {
-    if (!kIsWeb && defaultTargetPlatform != TargetPlatform.android) {
+    if (!kIsWeb &&
+        defaultTargetPlatform != TargetPlatform.android &&
+        defaultTargetPlatform != TargetPlatform.iOS) {
       throw PlatformNotSupportedException(defaultTargetPlatform.name);
     }
     if (kIsWeb && source.type == VideoSourceType.path) {
@@ -32,7 +34,7 @@ class ThumbnailSession {
       return ThumbnailSession._(platform, handle);
     } on MissingPluginException catch (error) {
       throw PlatformNotSupportedException(
-        kIsWeb ? 'Web' : 'Android',
+        kIsWeb ? 'Web' : defaultTargetPlatform.name,
         cause: error,
       );
     } on PlatformException catch (error) {

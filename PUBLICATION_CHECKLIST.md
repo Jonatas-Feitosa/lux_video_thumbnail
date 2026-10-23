@@ -1,3 +1,31 @@
+# iOS preview validation - 2026-10-22
+
+The current release candidate is `lux_video_thumbnail 0.0.2-ios.1` plus
+`lux_video_thumbnail_ios 1.0.0-dev.1`. Interface/Android/web reuse their hosted
+`1.0.0` versions. Prior initial-release notes below are historical and do not
+represent the current pub.dev state or current test counts.
+
+- [x] Add endorsed iOS package and permit iOS in public API and native picker.
+- [x] Implement AVFoundation sessions, byte/path/URL sources, JPEG/PNG, dimensions,
+  timestamps, owned files, chunk/copy/disposal methods and engine cleanup.
+- [x] Add CocoaPods/SwiftPM manifests, example permission description and native
+  integration/XCTest regressions for the Mac.
+- [x] Dart analysis clean; 118 distinct Dart/Flutter/browser tests and five Python
+  auditor regressions passed. Five isolated-export dry runs exited zero with
+  zero content-audit findings. Root/iOS tests also passed against hosted shared
+  dependencies.
+- [ ] Compile and execute native tests on macOS/Xcode; validate both dependency
+  managers, orientation, HEVC/HDR, remote sources, picker and engine lifecycle.
+- [ ] Validate the hosted main-package dependency after publishing the iOS preview.
+
+See [IOS_VALIDATION.md](IOS_VALIDATION.md) for current executable commands,
+results and limitations; see [PUBLICATION.md](PUBLICATION.md) for release order.
+No publication is performed by the validation scripts.
+
+---
+
+## Historical initial-release checklist
+
 # Publication readiness checklist
 
 This checklist records local work completed before the first pub.dev release.

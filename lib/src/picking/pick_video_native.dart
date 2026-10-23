@@ -4,7 +4,8 @@ import 'package:lux_video_thumbnail_platform_interface/lux_video_thumbnail_platf
 import 'picked_video.dart';
 
 Future<PickedVideo?> pickVideo({PickerCancellation? cancellation}) async {
-  if (defaultTargetPlatform != TargetPlatform.android) {
+  if (defaultTargetPlatform != TargetPlatform.android &&
+      defaultTargetPlatform != TargetPlatform.iOS) {
     throw PlatformNotSupportedException(defaultTargetPlatform.name);
   }
   final operation = FilePicker.platform.pickFiles(

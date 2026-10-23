@@ -6,6 +6,7 @@ $taskRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 $taskPackages = [ordered]@{
     lux_video_thumbnail_platform_interface = 'packages/lux_video_thumbnail_platform_interface'
     lux_video_thumbnail_android = 'packages/lux_video_thumbnail_android'
+    lux_video_thumbnail_ios = 'packages/lux_video_thumbnail_ios'
     lux_video_thumbnail_web = 'packages/lux_video_thumbnail_web'
     lux_video_thumbnail = '.'
 }

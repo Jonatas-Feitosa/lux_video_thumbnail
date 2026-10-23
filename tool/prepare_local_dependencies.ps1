@@ -1,6 +1,6 @@
 # Create development-only overrides; distribution manifests stay hosted.
 $taskRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
-$taskPackages = @('lux_video_thumbnail_platform_interface', 'lux_video_thumbnail_android', 'lux_video_thumbnail_web')
+$taskPackages = @('lux_video_thumbnail_platform_interface', 'lux_video_thumbnail_android', 'lux_video_thumbnail_web', 'lux_video_thumbnail_ios')
 foreach ($taskPackage in $taskPackages) {
     if (-not (Test-Path -LiteralPath (Join-Path $taskRoot "packages/$taskPackage/pubspec.yaml"))) {
         throw 'Local overrides require the full source checkout with packages/. Use hosted dependencies in an extracted package.'
@@ -9,7 +9,7 @@ foreach ($taskPackage in $taskPackages) {
 $taskOverrides = @{}
 $taskOverrides[$taskRoot] = "dependency_overrides:`n" + (($taskPackages | ForEach-Object { "  ${_}:`n    path: packages/$_`n" }) -join '')
 $taskOverrides[(Join-Path $taskRoot 'example')] = "dependency_overrides:`n" + (($taskPackages | ForEach-Object { "  ${_}:`n    path: ../packages/$_`n" }) -join '')
-foreach ($taskPlatform in @('android', 'web')) {
+foreach ($taskPlatform in @('android', 'web', 'ios')) {
     $taskOverrides[(Join-Path $taskRoot "packages/lux_video_thumbnail_$taskPlatform")] = "dependency_overrides:`n  lux_video_thumbnail_platform_interface:`n    path: ../lux_video_thumbnail_platform_interface`n"
 }
 foreach ($taskDirectory in $taskOverrides.Keys) {
@@ -17,7 +17,10 @@ foreach ($taskDirectory in $taskOverrides.Keys) {
     $taskExpected = $taskOverrides[$taskDirectory]
     if (Test-Path -LiteralPath $taskTarget) {
         $taskExisting = [IO.File]::ReadAllText($taskTarget).Replace("`r`n", "`n").TrimEnd()
-        if ($taskExisting -ne $taskExpected.TrimEnd()) {
+        $taskBeforeIos = ($taskExpected -replace '(?m)^  lux_video_thumbnail_ios:\r?\n    path: [^\r\n]+\r?\n?', '').TrimEnd()
+        if ($taskExisting -eq $taskBeforeIos) {
+            [IO.File]::WriteAllText($taskTarget, $taskExpected)
+        } elseif ($taskExisting -ne $taskExpected.TrimEnd()) {
             throw "Preserving custom overrides: $taskTarget. Merge local dependencies manually."
         }
     } else {

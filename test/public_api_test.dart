@@ -21,6 +21,18 @@ void main() {
   });
   final source = VideoSource.url('https://example.com/video.webm');
 
+  test('iOS public generation opens, reads and disposes a session', () async {
+    debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
+    final thumbnail = await LuxVideoThumbnail.generate(
+      source: VideoSource.path('/tmp/video.mp4'),
+      timestamp: Duration.zero,
+    );
+    expect(thumbnail.bytes, imageBytes);
+    expect(platform.opens, 1);
+    expect(platform.closes, 1);
+    expect(platform.results.single.disposals, 1);
+  });
+
   test(
     'public API returns a usable image and disposes intermediates',
     () async {
@@ -167,7 +179,7 @@ void main() {
   });
 
   test('unsupported platforms report a typed error', () async {
-    debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
+    debugDefaultTargetPlatformOverride = TargetPlatform.macOS;
     await expectLater(
       LuxVideoThumbnail.generate(source: source, timestamp: Duration.zero),
       throwsA(isA<PlatformNotSupportedException>()),

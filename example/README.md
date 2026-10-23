@@ -1,6 +1,6 @@
 ﻿# Example
 
-Run this app on Android or web to compare the two selection flows from the main
+Run this app on Android, iOS or web to compare the two selection flows from the main
 package. Tap **Choose thumbnail in dialog** to call `videoThumbnailDialog`,
 choose a video, move the slider and confirm. The confirmed image and timestamp
 appear on the screen; cancelling preserves the previously confirmed selection.
@@ -17,4 +17,6 @@ In the full source checkout, run `tool/prepare_local_dependencies.ps1` from the
 repository root before resolving dependencies. In a published/extracted package,
 the example uses the main package in its parent directory and resolves the
 federated dependencies from pub.dev. The distributed example includes Android
-and web scaffolds; iOS thumbnail generation is not implemented.
+and web scaffolds, plus an iOS scaffold and native integration tests for the iOS
+preview. See the root `IOS_VALIDATION.md` for Mac commands. When testing the
+published preview in a separate consumer, pin `lux_video_thumbnail: 0.0.2-ios.1`.

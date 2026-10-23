@@ -1,22 +1,22 @@
 ﻿# lux_video_thumbnail
 
 Generate an encoded video thumbnail at a requested position, or let a user select
-one with an embedded widget or dialog. Initial platforms: **Android and web**.
+one with an embedded widget or dialog on **Android, iOS and web**.
 
 > This project is at an early stage of development. Contributions, feedback, and
 > issue reports are welcome.
 
-This source checkout is prepared for the initial release; the four federated
-packages have not been published yet. See
+This checkout prepares the iOS preview release `0.0.2-ios.1`. Version `0.0.1`
+and its Android/web dependencies are already on pub.dev. See
 [PUBLICATION_CHECKLIST.md](PUBLICATION_CHECKLIST.md) for validation and remaining
 launch prerequisites.
 
 ## Installation and support
 
-After the federated packages are published, add `lux_video_thumbnail: ^0.0.1`
+After the iOS preview is published, add `lux_video_thumbnail: 0.0.2-ios.1`
 to your app's dependencies and run `flutter pub get`. For this source checkout,
 follow the local override instructions below until hosted packages are available.
-Requires Dart 3.10.9+, Flutter 3.38.10+ and Android API 24+ or a supported browser.
+Requires Dart 3.10.9+, Flutter 3.38.10+ and Android API 24+, iOS 13+, or a supported browser.
 
 | Platform | Status |
 | --- | --- |
@@ -24,7 +24,8 @@ Requires Dart 3.10.9+, Flutter 3.38.10+ and Android API 24+ or a supported brows
 | Chrome / Edge | Real media tests in JavaScript and Wasm |
 | Firefox | Real media tests in JavaScript fallback |
 | Safari / mobile browsers | Not validated |
-| iOS / desktop | Thumbnail generation not implemented |
+| iOS | Implemented for preview; native build, media and picker validation pending on macOS/Xcode. See [iOS validation](IOS_VALIDATION.md). |
+| Desktop | Thumbnail generation not implemented |
 
 ## Generate a thumbnail
 
@@ -45,7 +46,7 @@ Image.memory(thumbnail.bytes);
 Other sources:
 
 ```dart
-VideoSource.path('/path/to/video.mp4'); // Android only; the file is borrowed.
+VideoSource.path('/path/to/video.mp4'); // Android/iOS; the file is borrowed.
 VideoSource.path('content://...');     // Android content URI with access granted.
 VideoSource.url('https://example.com/video.mp4');
 ```
@@ -176,8 +177,12 @@ track whether the latest requested preview is ready, alongside `onChanged`.
   supplying a video path does not transfer ownership of that file.
   Native seeks use the nearest decoded frame. Advanced `preferKeyFrame` requests
   use a sync frame instead; the browser uses its ordinary seek for either hint.
-- iOS and desktop are not implemented by the thumbnail API and report a typed
-  unsupported-platform error. The legacy `getPlatformVersion()` remains available.
+- iOS uses AVFoundation, corrects video orientation, and encodes JPEG/PNG.
+  WebP output returns an unsupported-format error. Codec support depends on
+  the device; prefer H.264 MP4 for initial validation. Add a localized
+  `NSPhotoLibraryUsageDescription` to the app's Info.plist for the native video
+  picker. Remote video URLs follow the app's App Transport Security policy.
+- Desktop reports a typed unsupported-platform error.
 
 The example application consumes only the public API. Unit/widget tests simulate
 platform decoding. Browser tests use a locally generated red/blue video and check
@@ -189,7 +194,7 @@ monorepo overrides with
 `tool/prepare_local_dependencies.ps1` before `flutter pub get`. Distribution
 manifests use hosted versions. See [development and publication](PUBLICATION.md)
 for the supported SDK floor, package order and remaining release blockers.
-The pub.dev archive contains the main package and its Android/web example;
+The pub.dev archive contains the main package and its Android/iOS/web example;
 the federated implementations are separate dependencies. In an extracted archive,
 use the hosted dependencies directly rather than generating monorepo overrides.
 
